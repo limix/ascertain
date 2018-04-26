@@ -3,7 +3,7 @@
 We assume that the individual expections are zero, the sum of the variances
 of `a` and `b` are equal to one, and `a` and `b` are independent from each
 other, under no ascertainment.
-""""
+"""
 import scipy.stats as st
 
 
@@ -31,6 +31,7 @@ def mean(v, K, P):
     t = threshold(K)
     return v * st.norm.pdf(t) * (P - K) / (K * (1 - K))
 
+
 def second_moment(v, K, P):
     """Second moment of the underlying variable under ascertainment.
 
@@ -55,6 +56,7 @@ def variance(v, K, P):
     """
     return second_moment(v, K, P) - mean(v, K, P)**2
 
+
 def product_expectation(va, vb, K, P):
     """Expectation of `ab` under ascertainment.
 
@@ -67,6 +69,7 @@ def product_expectation(va, vb, K, P):
     """
     t = threshold(K)
     return (P / K - (1 - P) / (1 - K)) * st.norm.pdf(t) * t * va * vb
+
 
 def covariance(va, vb, K, P):
     """Variance of the underlying variable under ascertainment.
