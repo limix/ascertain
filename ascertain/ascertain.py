@@ -4,6 +4,7 @@ We assume that the individual expections are zero, the sum of the variances
 of `a` and `b` are equal to one, and `a` and `b` are independent from each
 other, under no ascertainment.
 """
+from numpy import sqrt
 import scipy.stats as st
 
 
@@ -84,3 +85,35 @@ def covariance(va, vb, K, P):
     ma = mean(va, K, P)
     mb = mean(vb, K, P)
     return product_expectation(va, vb, K, P) - ma * mb
+
+
+def alpha(va, vb, K, P):
+    v0 = variance(va, K, P)
+    v1 = variance(vb, K, P)
+    rho = covariance(va, vb, K, P)
+    v = v0 + v1
+    return 1 + sqrt((v - 2*rho)/(v + 2*rho))
+
+
+def m_mean(va, vb, K, P):
+    return (mean(va, K, P) + mean(vb, K, P)) / 2
+
+
+def m_second_moment(va, vb, K, P):
+    v0 = second_moment(va, K, P)
+    v1 = second_moment(vb, K, P)
+    v01 = product_expectation(va, vb, K, P)
+    return (v0 + 2 * v01 + v1)/4
+
+
+def corrected_mean(va, vb, K, P):
+    a = alpha(va, vb, K, P)
+    return mean(va, K, P) - a * m_mean(va, vb, K, P)
+
+
+def corrected_second_moment(va, vb, K, P):
+    a = alpha(va, vb, K, P)
+    v0 = second_moment(va, K, P)
+    v01 = product_expectation(va, vb, K, P)
+    vm = m_second_moment(va, vb, K, P)
+    return v0 - a * (v0 + v01) + a * a * vm
