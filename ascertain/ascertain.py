@@ -92,7 +92,7 @@ def alpha(va, vb, K, P):
     v1 = variance(vb, K, P)
     rho = covariance(va, vb, K, P)
     v = v0 + v1
-    return 1 + sqrt((v - 2*rho)/(v + 2*rho))
+    return 1 - sqrt((v - 2*rho)/(v + 2*rho))
 
 
 def m_mean(va, vb, K, P):
